@@ -1,14 +1,27 @@
 #include <VirtualWire.h>
-
 #include <ServoTimer2.h>
 
-#define Deg 5
+/* 
+NOTE TO FUTURE SELF:
+Using VirtualWire.h along with Servo.h creates a multiple definition conflict since both of 
+them use the same timer (multiple references of __vector_11 found). This is solved by using 
+ServoTimer2.h which is basically the same except the Servos are defined using the format
+
+ServoTimer2 myServo; instead of 
+Servo myServo;
+
+Also dont use VirtualWire use RadioHead instead.
+*/
+
+#define Deg 5 // number of degrees to move the servo each time the command is received 
+
 #define IN1 3
 #define IN2 4
 #define IN3 5
 #define IN4 6
 
 char command;
+
 ServoTimer2 shoulderServo;
 ServoTimer2 elbowServo;
 ServoTimer2 wristServo;
@@ -76,7 +89,7 @@ void loop() {
         case 'S':
           Stop();
           break;
-        // Add more cases for other commands
+        
         case  'A':
           wristPos = constrain(wristPos + Deg, 0, 180);
           wristServo.write(wristPos);
